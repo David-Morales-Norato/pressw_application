@@ -2,11 +2,17 @@ from serpapi import GoogleSearch
 
 
 class GoogleSearchTool:
-    def __init__(self, api_key: str) -> None:
+    def __init__(self, api_key: str, top_k: int = 10) -> None:
         self.api_key = api_key
+        self.top_k = top_k
 
     def search(self, query: str) -> str:
-        params = {"engine": "google", "q": query, "api_key": self.api_key}
+        params = {
+            "engine": "google",
+            "q": query,
+            "api_key": self.api_key,
+            "num": self.top_k,
+        }
 
         search = GoogleSearch(params)
         results = search.get_dict()
@@ -20,4 +26,6 @@ if __name__ == "__main__":
 
     api_key = os.getenv("SERPAPI_API_KEY")
     tool = GoogleSearchTool(api_key=api_key)
-    print(tool.search("How to make Exprresso Coffee"))
+    search_results = tool.search("How to make Exprresso Coffee")
+    print("Search results:")
+    print("Found", len(search_results), "recipes")
