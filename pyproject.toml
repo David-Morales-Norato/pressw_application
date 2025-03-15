@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "langchain-ollama>=0.2.3",
     "pre-commit>=4.1.0",
     "pyright>=1.1.396",
     "ruff>=0.11.0",
