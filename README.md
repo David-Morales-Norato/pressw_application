@@ -19,7 +19,14 @@ make install
 1. Make sure your virtual environment is activated
 2. Run the API server:
 ```bash
-uv run uvicorn app.app:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn app.app:app --reload --host 0.0.0.0 --port 8080
+```
+
+## Running with Docker
+
+1. Build the Docker image:
+```bash
+env $(cat .env | xargs) docker compose  --env-file .env up
 ```
 
 ## API Endpoints
@@ -27,7 +34,7 @@ uv run uvicorn app.app:app --reload --host 0.0.0.0 --port 8000
 ### POST /api/cooking
 Submit a cooking-related query:
 ```bash
-curl -X POST "http://localhost:8000/api/cooking" \
+curl -X POST "http://localhost:8080/api/cooking" \
      -H "Content-Type: application/json" \
      -d '{"query": "How do I make pasta?"}'
 ```
@@ -35,11 +42,11 @@ curl -X POST "http://localhost:8000/api/cooking" \
 ### GET /
 Get API information:
 ```bash
-curl "http://localhost:8000/"
+curl "http://localhost:8080/"
 ```
 
 ## Interactive API Documentation
 
 Once the server is running, visit:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+- Swagger UI: http://localhost:8080/docs
+
