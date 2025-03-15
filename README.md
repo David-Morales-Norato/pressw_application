@@ -21,6 +21,28 @@ The application uses a graph-based agent architecture  to process cooking querie
 
 ![Agent Graph](agent_graph.png)
 
+## What I did
+
+- Created a FastAPI application with a LangGraph-based agent architecture
+- Creted three agent tools:
+  - Recipe Search
+  - LLMs for decision making and reasoning
+  - Equipment Check
+- Implemented the agent graph as defined in the assessment definition
+- Added a Dockerfile and docker-compose.yml file to containerize the application
+- Added a README with instructions on how to run the application
+- Setup a basic CI/CD pipeline including format, lint, and typecheck.
+
+## What I would liked to include
+
+- Add a production-ready logging system
+- Add basic tests
+
+## Things to improve in terms of the agent graph
+
+- Add a tool to check if the user has the ingredients to make the recipe
+- Implement a RAG based tool to answer questions about cooking techniques
+
 ## Setup
 
 1. Create a virtual environment and install dependencies:
