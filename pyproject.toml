@@ -1,0 +1,11 @@
+[project]
+name = "pressw-application"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pre-commit>=4.1.0",
+    "pyright>=1.1.396",
+    "ruff>=0.11.0",
+]
