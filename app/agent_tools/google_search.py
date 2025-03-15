@@ -7,16 +7,11 @@ class GoogleSearchTool:
         self.top_k = top_k
 
     def search(self, query: str) -> str:
-        params = {
-            "engine": "google",
-            "q": query,
-            "api_key": self.api_key,
-            "num": self.top_k,
-        }
+        params = {"engine": "google", "q": query, "api_key": self.api_key}
 
         search = GoogleSearch(params)
         results = search.get_dict()
-        recipes_results = results["recipes_results"]
+        recipes_results = results.get("recipes_results", [])
 
         return recipes_results
 

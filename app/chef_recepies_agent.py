@@ -68,10 +68,16 @@ class ChefRecipesAgent:
         - Recipe requests
         - Kitchen equipment
         - Food preparation
+        - Meal planning
+        - Ingredient questions
+        - Dietary concerns
+        - Food storage
+        - Kitchen safety
         """
-
         # Prepare the context with the query
-        context = f"User Query: {state['query']}\n"
+        context = {
+            "user_query": state["query"],
+        }
         # Use LLM to analyze if the query is cooking-related
         llm_response = self.llm_cooking_related.invoke(context)
 
@@ -81,6 +87,7 @@ class ChefRecipesAgent:
         return {
             **state,
             "is_cooking_related": is_cooking_related,
+            "cooking_relevance_reasoning": "yes",
         }
 
     def get_cooking_ware(self, state: AgentState) -> AgentState:
@@ -90,55 +97,36 @@ class ChefRecipesAgent:
 
     def search_for_information(self, state: AgentState) -> AgentState:
         """Search for information related to the query."""
-        state.search_loop_count += 1
-        search_results = self.google_search_tool(state["query"])
+        state["search_loop_count"] = state.get("search_loop_count", 0) + 1
+        search_results = self.google_search_tool.search(state["query"])
         return {**state, "search_results": search_results}
 
     def determine_if_enough_info(self, state: AgentState) -> AgentState:
         """Determine if we have enough information to generate a response using LLM."""
-        context = []
-
-        # Add the original query for context
-        context.append(f"User Query: {state['query']}")
-
-        # Add cooking ware information if available
-        if state.get("cooking_ware"):
-            ware_list = ", ".join(state["cooking_ware"])
-            context.append(f"Available cooking ware: {ware_list}")
-        else:
-            context.append("No cooking ware information available.")
-
-        # Add search results if available
-        if state.get("search_results"):
-            context.append(f"Search information: {state['search_results']}")
-        else:
-            context.append("No search results available.")
-
-        # Add search loop count for context
-        context.append(
-            f"Number of search attempts: {state.get('search_loop_count', 0)}"
-        )
+        context = {
+            "user_query": state["query"],
+            "search_results": state["search_results"],
+            "cooking_ware": state["cooking_ware"],
+        }
 
         # Use LLM to determine if we have enough information
-        llm_response = self.llm_sufficient_info.invoke("\n".join(context))
+        llm_response = self.llm_sufficient_info.invoke(context)
 
         # Expect the LLM to return "yes" or "no"
-        has_enough_info = "yes" in llm_response.lower().strip()
+        has_enough_info = llm_response.lower().strip() == "yes"
 
-        return {
-            **state,
-            "has_enough_info": has_enough_info,
-            "sufficiency_reasoning": llm_response,
-        }
+        if state["search_loop_count"] > 3:
+            has_enough_info = True
+
+        return {**state, "has_enough_info": has_enough_info}
 
     def generate_response(self, state: AgentState) -> AgentState:
         """Generate a response using the LLM."""
-        context = []
-        if state.get("cooking_ware"):
-            ware_list = ", ".join(state["cooking_ware"])
-            context.append(f"Available cooking ware: {ware_list}")
-        if state.get("search_results"):
-            context.append(f"Search information: {state['search_results']}")
+        context = {
+            "user_query": state["query"],
+            "search_results": state["search_results"],
+            "cooking_ware": state["cooking_ware"],
+        }
         response = self.llm_generate_response.invoke(context)
         return {**state, "response": response}
 
@@ -214,4 +202,8 @@ class ChefRecipesAgent:
         Returns:
             Final state after processing through the graph
         """
-        return self.graph.invoke(state)
+
+        try:
+            return self.graph.invoke(state)
+        except Exception as e:
+            return {**state, "error_message": str(e)}

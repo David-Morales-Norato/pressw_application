@@ -46,11 +46,10 @@ Query: "What temperature is medium-high on a stove?"
 Response: yes
 Explanation: This relates to cooking temperature and kitchen equipment usage.
 
-Now, analyze the following user query:
-user query: {input}
-Remember to respond with just 'yes' or 'no' followed by a brief explanation.""",
+Now, analyze the following user query: Remember to respond with just 'yes' or 'no' followed by a brief explanation
+.""",
         ),
-        ("user", "{input}"),
+        ("user", "{user_query}"),
     ]
 )
 
@@ -102,16 +101,18 @@ Available Info:
 Response: no
 Explanation: Need more specific details about temperatures, timing, and required equipment for this complex dish.
 
-Now, analyze the following context:
-user query: {input}
-search results: {search_results}
-cooking ware: {cooking_ware}
+Now, analyze the following context: Remember to respond with just 'yes' or 'no' followed by a brief explanation.
 
-Remember to respond with just 'yes' or 'no' followed by a brief explanation.""",
+
+""",
         ),
         (
             "user",
-            "user query: {input}\nsearch results: {search_results}\ncooking ware: {cooking_ware}",
+            """
+user query: {user_query}
+search results: {search_results}
+cooking ware: {cooking_ware}
+""",
         ),
     ]
 )
@@ -124,29 +125,29 @@ generate_response_prompt = ChatPromptTemplate.from_messages(
 
 RESPONSE STRUCTURE:
 1. Brief Introduction
-   - Acknowledge the user's query
-   - Set expectations for the response
+    - Acknowledge the user's query
+    - Set expectations for the response
 
 2. Equipment Check
-   - List required equipment
-   - Mention available equipment from user's kitchen
-   - Suggest alternatives if needed
+    - List required equipment
+    - Mention available equipment from user's kitchen
+    - Suggest alternatives if needed
 
 3. Recipe/Instructions
-   - List ingredients if applicable
-   - Provide step-by-step instructions
-   - Include specific measurements and timings
-   - Add temperature settings when relevant
+    - List ingredients if applicable
+    - Provide step-by-step instructions
+    - Include specific measurements and timings
+    - Add temperature settings when relevant
 
 4. Tips and Warnings
-   - Include helpful tips for better results
-   - Mention common mistakes to avoid
-   - Add safety warnings if necessary
+    - Include helpful tips for better results
+    - Mention common mistakes to avoid
+    - Add safety warnings if necessary
 
 5. Alternatives and Substitutions
-   - Suggest modifications based on available equipment
-   - Mention possible ingredient substitutions
-   - Provide variations if relevant
+    - Suggest modifications based on available equipment
+    - Mention possible ingredient substitutions
+    - Provide variations if relevant
 
 FORMAT YOUR RESPONSE LIKE THIS:
 ---
@@ -201,13 +202,15 @@ Pro Tips:
 - Stir occasionally during cooking to prevent clumping
 
 Now, analyze the following context and provide a response:
-user query: {input}
-search results: {search_results}
-cooking ware: {cooking_ware}""",
+""",
         ),
         (
             "user",
-            "user query: {input}\nsearch results: {search_results}\ncooking ware: {cooking_ware}",
+            """
+user query: {user_query}
+search results: {search_results}
+cooking ware: {cooking_ware}
+""",
         ),
     ]
 )
