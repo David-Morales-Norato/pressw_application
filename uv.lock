@@ -194,6 +194,15 @@ wheels = [
 ]
 
 [[package]]
+name = "google-search-results"
+version = "2.4.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/77/30/b3a6f6a2e00f8153549c2fa345c58ae1ce8e5f3153c2fe0484d444c3abcb/google_search_results-2.4.2.tar.gz", hash = "sha256:603a30ecae2af8e600b22635757a6df275dad4b934f975e67878ccd640b78245", size = 18818 }
+
+[[package]]
 name = "h11"
 version = "0.14.0"
 source = { registry = "https://pypi.org/simple" }
@@ -522,6 +531,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "google-search-results" },
     { name = "langchain-ollama" },
     { name = "langgraph" },
     { name = "pre-commit" },
@@ -533,6 +543,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.115.11" },
+    { name = "google-search-results", specifier = ">=2.4.2" },
     { name = "langchain-ollama", specifier = ">=0.2.3" },
     { name = "langgraph", specifier = ">=0.3.11" },
     { name = "pre-commit", specifier = ">=4.1.0" },

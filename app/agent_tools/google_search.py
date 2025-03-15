@@ -1,11 +1,18 @@
+from serpapi import GoogleSearch
+
+
 class GoogleSearchTool:
-    def __init__(self, api_key: str | None = None) -> None:
-        if api_key is None:
-            raise ValueError("api_key is required")
+    def __init__(self, api_key: str) -> None:
         self.api_key = api_key
 
     def search(self, query: str) -> str:
-        return "This is a placeholder for the Google Search API"
+        params = {"engine": "google", "q": query, "api_key": self.api_key}
+
+        search = GoogleSearch(params)
+        results = search.get_dict()
+        recipes_results = results["recipes_results"]
+
+        return recipes_results
 
 
 if __name__ == "__main__":
